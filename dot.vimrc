@@ -44,71 +44,11 @@ set completeopt-=preview            " Don't show complete preview info
 set complete-=t,i                   " Don't complete based on tags
 set listchars=tab:\|\ ,trail:.,extends:>,precedes:<,eol:$
 
-if has("gui_running")
-    set lines=50
-    set columns=120
-    set background=dark
-    set guioptions-=T               " Remove toolbar
-    set mouse=a                     " Use mouse for all
-    hi normal guibg=black
-    colorscheme brookstream
-endif
-
-" Omnicomplete
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType ruby set omnifunc=rubycomplete#Complete
-imap <C-F> <C-X><C-O>
-
 " Make wq case insensitive
 command -nargs=* Q q <args>         " :Q quits
 command -nargs=* W w <args>         " :W saves
 command -nargs=* Wq wq <args>       " :Wq quits and saves
 command -nargs=* WQ wq <args>       " :WQ quits and saves
-
-" cscope options
-if has("cscope")
-    set cscopetag           " Use both cscope and ctags for 'ctrl-]', ':ta' and 'vim -t'
-    set csto=0              " Check cscope for definition before ctags
-    set cscopeverbose       " Show a message when cscope DB is added
-endif
-
-" Move between tabs
-map <F1> :tabp<CR>
-map <F2> :tabn<CR>
-
-" NERDTree Plugin
-map <F3> :NERDTreeToggle<CR>
-let NERDTreeWinSize=35
-" Mirror wildignore to NERDTreeIgnore
-let NERDTreeIgnore=[]
-for ignored in split(&wildignore, ",")
-    let ignored = substitute(ignored, "^\*", "", "")
-    let ignored = substitute(ignored, "\*", "\.*", "g")
-    let ignored = substitute(ignored, "\\.", "\\\\.", "g")
-    let ignored = substitute(ignored, "\\~", "\\\\~", "g")
-    let ignored = substitute(ignored, "$", "\$", "")
-    call add(NERDTreeIgnore, ignored)
-endfor
-unlet ignored
-
-" Tlist Plugin
-map <F4> :TlistToggle<CR>
-let Tlist_Enable_Fold_Column=0
-let Tlist_WinWidth=35
-let Tlist_GainFocus_On_ToggleOpen = 1      " Focus on the taglist when its toggled
-let Tlist_Close_On_Select = 1              " Close when something's selected  
-
-" Enable custom syntax plugins
-au BufRead,BufNewFile nginx.conf set ft=nginx
-au BufRead,BufNewFile *.mkd set ft=mkd
-au BufRead,BufNewFile *.jinja.html set ft=htmljinja
-au BufRead,BufNewFile *.jinja set ft=jinja
-
-" Enable closetag for html / xml
-au Filetype html,htmldjango,xml,xsl runtime scripts/closetag.vim
 
 " F5 to toggle Paste
 map <F5> :call Paste_on_off()<CR>
